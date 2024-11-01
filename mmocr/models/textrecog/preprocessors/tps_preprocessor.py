@@ -41,7 +41,7 @@ class TPStransform(nn.Module):
         N = num_control_points
 
         # create padded kernel matrix
-        forward_kernel = torch.zeros(N + 3, N + 3)
+        forward_kernel = torch.zeros(N + 3, N + 3, device="cuda")
         target_control_partial_repr = self._compute_partial_repr(
             target_control_points, target_control_points)
         forward_kernel[:N, :N].copy_(target_control_partial_repr)
