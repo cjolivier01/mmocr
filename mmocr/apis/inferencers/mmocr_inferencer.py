@@ -3,16 +3,16 @@ import os.path as osp
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple, Union
 
-import mmcv
-import mmengine
 import numpy as np
 from rich.progress import track
 
+import mmcv
+import mmengine
 from mmocr.registry import VISUALIZERS
 from mmocr.structures import TextSpottingDataSample
 from mmocr.utils import ConfigType, bbox2poly, crop_img, poly2bbox
-from .base_mmocr_inferencer import (BaseMMOCRInferencer, InputsType, PredType,
-                                    ResType)
+
+from .base_mmocr_inferencer import BaseMMOCRInferencer, InputsType, PredType, ResType
 from .kie_inferencer import KIEInferencer
 from .textdet_inferencer import TextDetInferencer
 from .textrec_inferencer import TextRecInferencer
@@ -244,10 +244,11 @@ class MMOCRInferencer(BaseMMOCRInferencer):
         det_batch_size: Optional[int] = None,
         rec_batch_size: Optional[int] = None,
         kie_batch_size: Optional[int] = None,
-        out_dir: str = 'results/',
+        out_dir: str = "results/",
         return_vis: bool = False,
         save_vis: bool = False,
         save_pred: bool = False,
+        progress_bar: bool = True,
         **kwargs,
     ) -> dict:
         """Call the inferencer.
@@ -313,7 +314,9 @@ class MMOCRInferencer(BaseMMOCRInferencer):
         chunked_inputs = super(BaseMMOCRInferencer,
                                self)._get_chunk_data(ori_inputs, batch_size)
         results = {'predictions': [], 'visualization': []}
-        for ori_input in track(chunked_inputs, description='Inference'):
+        for ori_input in track(
+            chunked_inputs, description="Inference", disable=not progress_bar
+        ):
             preds = self.forward(
                 ori_input,
                 det_batch_size=det_batch_size,
