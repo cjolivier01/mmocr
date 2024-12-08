@@ -24,7 +24,7 @@ class FCENet(SingleStageTextDetector):
         results = super().__call__(*args, **kwargs)
         self._acc_time += time.time() - start
         self._counter += 1
-        if self._counter % 50:
-            print(f"FCENet time: {self._counter / self._acc_time} fps each")
-            self._counter = 0
+        # if self._counter % 50:
+        #     print(f"FCENet time: {self._counter / self._acc_time} fps each")
+        #     self._counter = 0
         return results
