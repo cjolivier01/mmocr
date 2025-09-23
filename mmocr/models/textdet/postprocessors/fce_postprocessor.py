@@ -203,7 +203,7 @@ class FCEPostprocessor(BaseTextDetPostProcessor):
             for poly in result_polys:
                 poly = np.array(poly).reshape(-1, 2).astype(np.float32)
                 points = cv2.boxPoints(cv2.minAreaRect(poly))
-                points = np.int0(points)
+                points = points.astype(int)
                 new_polys.append(points.reshape(-1))
 
             return new_polys, result_scores
